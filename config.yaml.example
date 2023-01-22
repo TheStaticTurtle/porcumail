@@ -1,0 +1,38 @@
+
+lmtp:
+    hostname: localhost
+    port: 10024
+
+smtp:
+    hostname: localhost
+    port: 25
+    tls: false
+    username: "porcumail"
+    password: "12345678"
+
+mta:
+    type: PostfixMTA
+    config:
+        paths:
+            transport_maps: /etc/porcumail/postfix/transport_maps
+            local_recipient_maps: /etc/porcumail/postfix/local_recipient_maps
+            virtual_mailbox_maps: /etc/porcumail/postfix/virtual_mailbox_maps
+            smtpd_sender_login_maps: /etc/porcumail/postfix/smtpd_sender_login_maps
+
+list_provider:
+    type: LdapListProvider
+    config:
+        server:
+            uri: ldap://ad.example.com
+            bind_dn: "ldap_bind"
+            bind_password: ""
+        search:
+            base: "OU=Mailing Lists,DC=example,DC=com"
+            group_attribute_map:
+                name: name
+                email: mail
+            user_attribute_map:
+                uuid: sAMAccountName
+                name: name
+                email: mail
+                email_default_uuid_domain: "example.com"
